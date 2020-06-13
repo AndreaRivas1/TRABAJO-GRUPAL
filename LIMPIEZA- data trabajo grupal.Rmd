@@ -1,0 +1,83 @@
+NOTA: Las dos primeras datas fueron extraídas del INEI y descargadas automáticamente en formato excel. En este programa se realizó únicamente el filtro por columnas aprendido en clase teórica con el objetivo de ordenar la tabla respecto a las variables que se usarán para este trabajo.
+Este mecanismo fue utilizado puesto que la data cuenta con más de 1770 celdas originalmente por lo mismo que cada caso responde a dos preguntas. En ese sentido, mediante excel se ordenó la tabla de tal manera que solo se tomara en cuenta la pregunta que respondía al sentido que le busco dar a la variable. El resto de la limpieza se presenta a continuación 
+
+DATA 1: ANALFABETOS
+```{r}
+library(readxl)
+analfabetos <- read_excel("analfabetosready.xlsx")
+
+```
+limpieza
+```{r}
+#cambiando nombres
+names(analfabetos)
+names(analfabetos)= c("Provincia", "Analfabetos")
+#verificando estructura 
+analfabetos$PoblacionAnalfabeta= as.numeric(analfabetos$PoblacionAnalfabeta)
+str(analfabetos$PoblacionAnalfabeta)
+
+str(analfabetos)
+analfabetos$PROVINCIA= as.factor(analfabetos$PROVINCIA)
+
+#eliminando filas que no contienen datos relevantes
+analfabetos=analfabetos[-c(197:784), ]
+
+#omitiendo na para dejar todo listo
+analfabetos=na.omit(analfabetos)
+```
+
+DATA 2: ASISTENCIA A CENTRO EDUCATIVO 
+```{r}
+library(readxl)
+inasistenciaaeducacion <- read_excel("inasistenciaaeducacion.xlsx")
+```
+limpieza
+```{r}
+#cambiando nombres
+names(inasistenciaaeducacion)
+names(inasistenciaaeducacion)= c("Provincia", "No asisten")
+names(inasistenciaaeducacion)
+
+#verificando estructura
+inasistenciaaeducacion$`No asisten`= as.numeric(inasistenciaaeducacion$`No asisten`)
+str(inasistenciaaeducacion)
+
+#omitiendo na para dejar todo listo 
+inasistenciaaeducacion=na.omit(inasistenciaaeducacion)
+```
+
+DATA 3: ATRASO ESCOLAR 
+```{r}
+library(readxl)
+atrasoescolar_primaria <- read_excel("atrasoescolar_primaria.xls")
+```
+limpieza
+```{r}
+#eliminando columnas que no contienen datos relevantantes
+atrasoescolar_primaria$`Alumnos con atraso escolar, primaria, total (% de matrícula inicial)`=NULL
+
+#cambiando nombres
+names(atrasoescolar_primaria)
+names(atrasoescolar_primaria)= c("Departamento", "Provincia", "2016", "2017")
+##verificamos
+names(atrasoescolar_primaria)
+
+#continuación de eliminación de columnas 
+atrasoescolar_primaria$Departamento= NULL
+atrasoescolar_primaria$`2016`= NULL ##solo buscamos quedarnos con datos del 2017 
+head(atrasoescolar_primaria)
+
+#para mayor comodidad, cambiamos el nombre de la segunda columna para que quede así:  
+names(atrasoescolar_primaria)= c("Provincia", "AtrasoEscolar")
+
+#eliminando filas que no contienen datos relevantes
+atrasoescolar_primaria=atrasoescolar_primaria[-c(1:3), ]
+
+#verificando estructura
+str(atrasoescolar_primaria)##todo ok 
+
+#omitiendo na para dejar todo listo 
+atrasoescolar_primaria=na.omit(atrasoescolar_primaria)
+```
+
+
